@@ -5,12 +5,23 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
+import com.shadrin.kotlin_weather_ya.databinding.ActivityMainBinding
 import android.view.View.OnClickListener as OnClickListener
 
-class MainActivity : AppCompatActivity() {
+internal class MainActivity : AppCompatActivity() {
+
+    lateinit var binding: ActivityMainBinding
+
+    /*
+     lateinit - отложенная инициализация, позволяет избежать NullPointerException (null) пока нет
+       инфы по переменной.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        //setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+        binding.btn1.text = "WTF!"
         findViewById<AppCompatButton>(R.id.btn1).setOnClickListener(object : OnClickListener {
             override fun onClick(v: View?) {
 

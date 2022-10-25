@@ -6,6 +6,11 @@ plugins {
 android {
     compileSdk 32
 
+
+    viewBinding {
+        enabled = true
+    }
+
     defaultConfig {
         applicationId "com.shadrin.kotlin_weather_ya"
         minSdk 24
