@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.shadrin.kotlin_weather_ya.VM.AppState
 import com.shadrin.kotlin_weather_ya.databinding.FragmentWeatherListBinding
 
 class WeatherListFragment : Fragment() {
@@ -39,8 +40,8 @@ class WeatherListFragment : Fragment() {
         который взаимодействует с любым кодом отражения Java, но не может работать с некоторыми
         функциями Kotlin.
          */
-        ViewModel.liveData.observe(viewLifecycleOwner, object : Observer<Any> {
-            override fun onChanged(t: Any?) {
+        ViewModel.liveData.observe(viewLifecycleOwner, object : Observer<AppState> {
+            override fun onChanged(t: AppState) {
                 Toast.makeText(requireContext(), "It Work!", Toast.LENGTH_LONG).show()
             }
             /*
@@ -48,7 +49,7 @@ class WeatherListFragment : Fragment() {
             Знает Жизненый Цикл "подписчика".
              */
         })
-
+            ViewModel.sentRequest()
 
     }
 }
