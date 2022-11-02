@@ -23,37 +23,10 @@ internal class MainActivity : AppCompatActivity() {
         //setContentView(R.layout.activity_main)
         setContentView(binding.root)
         //binding.btn1.text = "WTF!"
-        if (savedInstanceState==null) {
-            supportFragmentManager.beginTransaction().replace(R.id.container, WeatherListFragment.newInstant()).commit()      }
-
-       /* findViewById<AppCompatButton>(R.id.btn1).setOnClickListener(object : OnClickListener {
-
-
-           override fun onClick(v: View?) {
-
-            }
-
-        })
-
-        */
-        val dataClass1 = City(name = "Barselona", weather = R.color.purple_200)
-        val dataClass2 = dataClass1.copy(name = "Madrid")
-
-        fun city() {
-            val cites = ArrayList<City>()
-            cites.add(City("New York", R.color.teal_200))
-            cites.add(City("Valencia", R.color.purple_200))
-            cites.add(City("London", R.color.white))
-
-            for ((d, r) in cites) {
-                println("$d, $r")
-            }
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, WeatherListFragment.newInstant()).commit()
         }
-
-        Log.d("City", dataClass1.toString())
-        Log.d("City", dataClass2.toString())
-        println(dataClass2)
-
 
     }
 

@@ -1,5 +1,7 @@
 package com.shadrin.kotlin_weather_ya.VM
 
+import com.shadrin.kotlin_weather_ya.domain.Weather
+
 sealed class AppState {
     /*
     Запечатанные классы и интерфейсы представляют собой ограниченные иерархии классов,
@@ -7,7 +9,7 @@ sealed class AppState {
      известны во время компиляции. Никакие другие подклассы не могут появляться вне модуля, внутри
      которого определен запечатанный класс.
      */
-    data class Success(val weatherData: Any) : AppState()
+    data class Success(val weatherData: Weather) : AppState()
     data class Error(val error: Throwable) : AppState()
     object Loading : AppState() // Добавить отображение загрузки ч/з ProgressBar
     /*

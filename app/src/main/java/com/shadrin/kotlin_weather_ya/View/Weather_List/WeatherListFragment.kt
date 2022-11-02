@@ -40,16 +40,34 @@ class WeatherListFragment : Fragment() {
         который взаимодействует с любым кодом отражения Java, но не может работать с некоторыми
         функциями Kotlin.
          */
-        ViewModel.liveData.observe(viewLifecycleOwner, object : Observer<AppState> {
+        ViewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
             override fun onChanged(t: AppState) {
-                Toast.makeText(requireContext(), "It Work!", Toast.LENGTH_LONG).show()
+                //    Toast.makeText(requireContext(), "It Work!$t", Toast.LENGTH_LONG).show()
+                renderData(t)
             }
             /*
             liveData - предназначен для хранения объекта и разрешает подписаться на его изменения.
             Знает Жизненый Цикл "подписчика".
              */
-        })
-            ViewModel.sentRequest()
 
+        })
+        ViewModel.sentRequest()
+
+    }
+
+    private fun renderData(appState: AppState) {
+        when (appState) {
+            is AppState.Error -> {/*TODO HW*/}
+            AppState.Loading -> {/*TODO HW*/}
+            is AppState.Success -> {
+
+                val result = appState.weatherData
+                bilding.cityName.text = result.city.name
+                bilding.temperatureValue.text = result.temperature.toString()
+                bilding.feelsLikeValue.text = result.feelsLike.toString()
+                bilding.cityCoordinates.text = "${result.city.lat}/${result.city.lon}"
+
+            }
+        }
     }
 }
