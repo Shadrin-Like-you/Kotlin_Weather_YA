@@ -16,14 +16,25 @@ class WeatherListFragment : Fragment() {
         fun newInstant() = WeatherListFragment()
     }
 
-    lateinit var bilding: FragmentWeatherListBinding
+    private var _bilding: FragmentWeatherListBinding? = null // прописываем 1 раз, чтобы потом
+    // не использовать в вызывах save call "?."
+    private val bilding: FragmentWeatherListBinding
+        get() {
+            return _bilding!!
+        }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _bilding = null
+    }
+
     lateinit var ViewModel: WeatherListVM
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        bilding = FragmentWeatherListBinding.inflate(inflater)
+        _bilding = FragmentWeatherListBinding.inflate(inflater)
         return bilding.root
     }
 
@@ -34,7 +45,7 @@ class WeatherListFragment : Fragment() {
         ViewModel = ViewModelProvider(this).get(WeatherListVM::class.java)
         /*
         Используя ::class, вы получаете экземпляр KClass. Это API-интерфейс Kotlin Reflection,
-        который может обрабатывать такие функции Kotlin, как свойства, классы данных и т. д.
+        который может обрабатывать такие функции Kotlin, как свойства, классы данных и т.д.
 
         Используя ::class.java, вы получаете экземпляр класса. Это Java Reflection API,
         который взаимодействует с любым кодом отражения Java, но не может работать с некоторыми
@@ -57,8 +68,10 @@ class WeatherListFragment : Fragment() {
 
     private fun renderData(appState: AppState) {
         when (appState) {
-            is AppState.Error -> {/*TODO HW*/}
-            AppState.Loading -> {/*TODO HW*/}
+            is AppState.Error -> {/*TODO HW*/
+            }
+            AppState.Loading -> {/*TODO HW*/
+            }
             is AppState.Success -> {
 
                 val result = appState.weatherData
