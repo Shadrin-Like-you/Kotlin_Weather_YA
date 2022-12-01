@@ -3,16 +3,15 @@ package com.shadrin.kotlin_weather_ya.View.Weather_List
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.shadrin.kotlin_weather_ya.VM.AppState
-import com.shadrin.kotlin_weather_ya.model.Repository
-import com.shadrin.kotlin_weather_ya.model.RepositoryLocalImpl
-import com.shadrin.kotlin_weather_ya.model.RepositoryRemoteImpl
+import com.shadrin.kotlin_weather_ya.model.*
 import java.lang.Thread.sleep
 
 class WeatherListVM(
     private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()
 ) :
     ViewModel() {
-    lateinit var repository: Repository
+    lateinit var repositoryAll: RepositoryAll
+    lateinit var repositorySingle: RepositorySingle
 
     fun getLiveData(): MutableLiveData<AppState> {
         choiceRepository()
@@ -20,25 +19,27 @@ class WeatherListVM(
     }
 
     private fun choiceRepository() {
-        repository = if (isConnection()) {
+        repositorySingle = if (isConnection()) {
             RepositoryRemoteImpl()
         } else {
             RepositoryLocalImpl()
         }
+        repositoryAll = RepositoryLocalImpl()
     }
 
-    fun sentRequest() {
+  fun getWeatherListForRussia(){
+      sentRequest(Location.Russian)
+  }
+    fun getWeatherListForWorld(){
+        sentRequest(Location.World)
+    }
+   private fun sentRequest(location: Location) {
         liveData.value = AppState.Loading
         if ((0..3).random() == 1) {
             liveData.postValue(AppState.Error(throw IllegalAccessException("Что-то сломалось :(")))
         } else {
             liveData.postValue(
-                AppState.Success(
-                    repository.getWeather(
-                        55.755826,
-                        37.617299900000035
-                    )
-                )
+                AppState.SuccessAll(repositoryAll.getListWeather(location))
             )
         }
     }

@@ -9,7 +9,8 @@ sealed class AppState {
      известны во время компиляции. Никакие другие подклассы не могут появляться вне модуля, внутри
      которого определен запечатанный класс.
      */
-    data class Success(val weatherData: Weather) : AppState()
+    data class SuccessSingle(val weatherData: Weather) : AppState()
+    data class SuccessAll(val weatherList: List<Weather>) : AppState()
     data class Error(val error: Throwable) : AppState()
     object Loading : AppState() // Добавить отображение загрузки ч/з ProgressBar
     /*

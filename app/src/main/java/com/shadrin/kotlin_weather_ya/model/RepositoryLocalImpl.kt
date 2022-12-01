@@ -2,23 +2,26 @@ package com.shadrin.kotlin_weather_ya.model
 
 import com.shadrin.kotlin_weather_ya.VM.AppState
 import com.shadrin.kotlin_weather_ya.domain.Weather
+import com.shadrin.kotlin_weather_ya.domain.getRussianCities
+import com.shadrin.kotlin_weather_ya.domain.getWorldCities
+import com.shadrin.kotlin_weather_ya.utils.LOCATION_RF
 
-class RepositoryLocalImpl:Repository {
-    override fun getListWeather(): List<Weather> {
+class RepositoryLocalImpl : RepositoryAll,RepositorySingle {
+    override fun getListWeather(location: Location): List<Weather> {
 
-       return listOf(Weather())
+        return when (location) {
+            Location.Russian -> {
+                getRussianCities()
+            }
+            Location.World -> {
+                getWorldCities()
+            }
+        }
     }
 
     override fun getWeather(lat: Double, lon: Double): Weather {
         return Weather()
     }
 
-    override fun getWeatherFromServer(): Weather {
-        TODO("Not yet implemented")
-    }
-
-    override fun getWeatherFromLocalStorage(): Weather {
-        TODO("Not yet implemented")
-    }
 
 }
