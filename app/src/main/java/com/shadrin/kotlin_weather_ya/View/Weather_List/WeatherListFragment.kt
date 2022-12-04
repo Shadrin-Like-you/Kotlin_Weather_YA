@@ -8,24 +8,30 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.shadrin.kotlin_weather_ya.MainActivity
+import com.shadrin.kotlin_weather_ya.R
 import com.shadrin.kotlin_weather_ya.VM.AppState
+import com.shadrin.kotlin_weather_ya.View.Weather_List.View_details.DetailsFragment
+import com.shadrin.kotlin_weather_ya.View.Weather_List.View_details.OnItemClick
 import com.shadrin.kotlin_weather_ya.databinding.FragmentWeatherListBinding
+import com.shadrin.kotlin_weather_ya.domain.Weather
 
-class WeatherListFragment : Fragment() {
+class WeatherListFragment : Fragment(), OnItemClick {
     companion object {
         fun newInstant() = WeatherListFragment()
     }
 
-    private var _bilding: FragmentWeatherListBinding? = null // прописываем 1 раз, чтобы потом
-    // не использовать в вызывах save call "?."
-    private val bilding: FragmentWeatherListBinding
+    var isRussian = true
+    private var _binding: FragmentWeatherListBinding? = null
+    // прописываем 1 раз, чтобы потом не использовать в вызывах save call "?."
+    private val binding: FragmentWeatherListBinding
         get() {
-            return _bilding!!
+            return _binding!!
         }
 
     override fun onDestroy() {
         super.onDestroy()
-        _bilding = null
+        _binding = null
     }
 
     lateinit var ViewModel: WeatherListVM
@@ -34,8 +40,8 @@ class WeatherListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _bilding = FragmentWeatherListBinding.inflate(inflater)
-        return bilding.root
+        _binding = FragmentWeatherListBinding.inflate(inflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,8 +68,18 @@ class WeatherListFragment : Fragment() {
              */
 
         })
-        ViewModel.sentRequest()
 
+        binding.weatherListFragmentFAB.setOnClickListener {
+            isRussian = !isRussian
+            if (isRussian) {
+                ViewModel.getWeatherListForRussia()
+                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_russia)
+            } else {
+                ViewModel.getWeatherListForWorld()
+                binding.weatherListFragmentFAB.setImageResource(R.drawable.ic_world)
+            }
+        }
+        ViewModel.getWeatherListForRussia()
     }
 
     private fun renderData(appState: AppState) {
@@ -72,15 +88,20 @@ class WeatherListFragment : Fragment() {
             }
             AppState.Loading -> {/*TODO HW*/
             }
-            is AppState.Success -> {
+            is AppState.SuccessSingle -> {
 
                 val result = appState.weatherData
-                bilding.cityName.text = result.city.name
-                bilding.temperatureValue.text = result.temperature.toString()
-                bilding.feelsLikeValue.text = result.feelsLike.toString()
-                bilding.cityCoordinates.text = "${result.city.lat}/${result.city.lon}"
-
+            }
+            is AppState.SuccessAll -> {
+                binding.mainFragmentRecyclerView.adapter=WeatherListAdapter(appState.weatherList,this)
             }
         }
+    }
+
+    override fun onItemClick(weather: Weather) {
+        (binding.root as MainActivity).supportFragmentManager.beginTransaction().hide(this).add(
+          //hide(this).add - скрывает рание клики, возвращая к последнему экрану
+        R.id.container, DetailsFragment.newInstant(weather)
+        ).addToBackStack("").commit()
     }
 }
