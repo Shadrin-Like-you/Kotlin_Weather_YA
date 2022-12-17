@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.shadrin.kotlin_weather_ya.MainActivity
 import com.shadrin.kotlin_weather_ya.R
 import com.shadrin.kotlin_weather_ya.VM.AppState
+import com.shadrin.kotlin_weather_ya.VM.WeatherListVM
 import com.shadrin.kotlin_weather_ya.View.Weather_List.View_details.DetailsFragment
 import com.shadrin.kotlin_weather_ya.View.Weather_List.View_details.OnItemClick
 import com.shadrin.kotlin_weather_ya.databinding.FragmentWeatherListBinding
@@ -99,7 +98,7 @@ class WeatherListFragment : Fragment(), OnItemClick {
     }
 
     override fun onItemClick(weather: Weather) {
-        (binding.root as MainActivity).supportFragmentManager.beginTransaction().hide(this).add(
+        requireActivity().supportFragmentManager.beginTransaction().hide(this).add(
           //hide(this).add - скрывает рание клики, возвращая к последнему экрану
         R.id.container, DetailsFragment.newInstant(weather)
         ).addToBackStack("").commit()

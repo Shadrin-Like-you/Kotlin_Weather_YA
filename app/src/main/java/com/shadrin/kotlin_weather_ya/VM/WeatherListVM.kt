@@ -1,10 +1,9 @@
-package com.shadrin.kotlin_weather_ya.View.Weather_List
+package com.shadrin.kotlin_weather_ya.VM
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.shadrin.kotlin_weather_ya.VM.AppState
 import com.shadrin.kotlin_weather_ya.model.*
-import java.lang.Thread.sleep
 
 class WeatherListVM(
     private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()
@@ -27,21 +26,27 @@ class WeatherListVM(
         repositoryAll = RepositoryLocalImpl()
     }
 
-  fun getWeatherListForRussia(){
-      sentRequest(Location.Russian)
-  }
-    fun getWeatherListForWorld(){
+    fun getWeatherListForRussia() {
+        sentRequest(Location.Russian)
+    }
+
+    fun getWeatherListForWorld() {
         sentRequest(Location.World)
     }
-   private fun sentRequest(location: Location) {
+
+    private fun sentRequest(location: Location) {
         liveData.value = AppState.Loading
-        if (false) {
-            liveData.postValue(AppState.Error(throw IllegalAccessException("Что-то сломалось :(")))
-        } else {
-            liveData.postValue(
-                AppState.SuccessAll(repositoryAll.getListWeather(location))
-            )
-        }
+        Thread {
+            Thread.sleep(200L)
+            if (false) {
+                liveData.postValue(AppState.Error(IllegalAccessException("Что-то сломалось :(")))
+            } else {
+                liveData.postValue(
+                    AppState.SuccessAll(repositoryAll.getListWeather(location))
+                )
+            }
+        }.start()
+
     }
 
     private fun isConnection(): Boolean {

@@ -2,12 +2,8 @@ package com.shadrin.kotlin_weather_ya
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import androidx.appcompat.widget.AppCompatButton
 import com.shadrin.kotlin_weather_ya.View.Weather_List.WeatherListFragment
 import com.shadrin.kotlin_weather_ya.databinding.ActivityMainBinding
-import android.view.View.OnClickListener as OnClickListener
 
 internal class MainActivity : AppCompatActivity() {
 

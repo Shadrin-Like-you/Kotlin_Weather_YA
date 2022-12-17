@@ -5,13 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.shadrin.kotlin_weather_ya.VM.AppState
-import com.shadrin.kotlin_weather_ya.View.Weather_List.WeatherListFragment
-import com.shadrin.kotlin_weather_ya.View.Weather_List.WeatherListVM
 import com.shadrin.kotlin_weather_ya.databinding.FragmentDetailsBinding
-import com.shadrin.kotlin_weather_ya.databinding.FragmentWeatherListBinding
 import com.shadrin.kotlin_weather_ya.domain.Weather
 
 class DetailsFragment : Fragment() {

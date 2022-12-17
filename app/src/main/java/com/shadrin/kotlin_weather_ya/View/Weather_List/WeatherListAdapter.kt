@@ -4,11 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.shadrin.kotlin_weather_ya.MainActivity
-import com.shadrin.kotlin_weather_ya.R
-import com.shadrin.kotlin_weather_ya.View.Weather_List.View_details.DetailsFragment
 import com.shadrin.kotlin_weather_ya.View.Weather_List.View_details.OnItemClick
-import com.shadrin.kotlin_weather_ya.databinding.FragmentWeatherListBinding
 import com.shadrin.kotlin_weather_ya.databinding.FragmentWeatherListRecyclerItemBinding
 import com.shadrin.kotlin_weather_ya.domain.Weather
 

@@ -4,11 +4,8 @@ import com.shadrin.kotlin_weather_ya.domain.Weather
 
 class RepositoryRemoteImpl : RepositorySingle, RepositoryAll {
 
-       override fun getWeather(lat: Double, lon: Double): Weather {
-           Thread {
-               Thread.sleep(200L)
-           }.start()
-           return Weather()
+    override fun getWeather(lat: Double, lon: Double): Weather {
+        return Weather()
     }
 
     override fun getListWeather(location: Location): List<Weather> {
