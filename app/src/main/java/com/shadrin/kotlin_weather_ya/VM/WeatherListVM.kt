@@ -2,8 +2,8 @@ package com.shadrin.kotlin_weather_ya.VM
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.shadrin.kotlin_weather_ya.VM.AppState
 import com.shadrin.kotlin_weather_ya.model.*
+import kotlin.random.Random
 
 class WeatherListVM(
     private val liveData: MutableLiveData<AppState> = MutableLiveData<AppState>()
@@ -37,8 +37,8 @@ class WeatherListVM(
     private fun sentRequest(location: Location) {
         liveData.value = AppState.Loading
         Thread {
-            Thread.sleep(200L)
-            if (false) {
+            Thread.sleep(3000L)
+            if ((0..3).random(Random(System.currentTimeMillis())) ==1) {
                 liveData.postValue(AppState.Error(IllegalAccessException("Что-то сломалось :(")))
             } else {
                 liveData.postValue(

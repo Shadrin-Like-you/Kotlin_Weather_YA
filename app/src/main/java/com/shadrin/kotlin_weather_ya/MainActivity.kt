@@ -1,7 +1,7 @@
 package com.shadrin.kotlin_weather_ya
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.shadrin.kotlin_weather_ya.View.Weather_List.WeatherListFragment
 import com.shadrin.kotlin_weather_ya.databinding.ActivityMainBinding
 
@@ -34,5 +34,25 @@ internal class MainActivity : AppCompatActivity() {
    & [lang=<язык ответа>]
 
    X-Yandex-API-Key: <значение ключа>
+
+   Сортировка с помощью лямбд:
+    var numList = listOf(3,5,2,9,45,23,1).also {
+        it.sorted() //сортируем
+    }.also {
+        it.map { "$it" } // записываем новый список (необязательно)
+    }.let { it.first() } // возвращаем первый (он же минимум) элемент
+
+   Пример по замене значений с помощью лямбды
+    var lat: Double = 1.0
+    var lon: Double = 2.0
+    Log.d("@@@","lat: ${lat} lon: ${lat}")
+    lat = lon.apply{
+        lon = lat
+    }
+    Log.d("@@@","lat: ${lat} lon: ${lat} ")
+
+    результат:
+    было @@@ lat: 1.0 lon: 2.0
+    стало @@@ lat: 2.0 lon: 1.0
 */
 
