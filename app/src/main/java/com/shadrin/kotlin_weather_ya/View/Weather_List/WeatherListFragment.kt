@@ -59,17 +59,13 @@ class WeatherListFragment : Fragment(), OnItemClick {
         который взаимодействует с любым кодом отражения Java, но не может работать с некоторыми
         функциями Kotlin.
          */
-        ViewModel.getLiveData().observe(viewLifecycleOwner, object : Observer<AppState> {
-            override fun onChanged(t: AppState) {
-                //    Toast.makeText(requireContext(), "It Work!$t", Toast.LENGTH_LONG).show()
-                renderData(t)
-            }
-            /*
-            liveData - предназначен для хранения объекта и разрешает подписаться на его изменения.
-            Знает Жизненый Цикл "подписчика".
-             */
-
-        })
+        ViewModel.getLiveData().observe(viewLifecycleOwner
+        ) { t -> renderData(t)
+        }
+        /*
+    liveData - предназначен для хранения объекта и разрешает подписаться на его изменения.
+    Знает Жизненый Цикл "подписчика".
+     */
 
         binding.weatherListFragmentFAB.setOnClickListener {
             isRussian = !isRussian
@@ -131,8 +127,8 @@ class WeatherListFragment : Fragment(), OnItemClick {
     }
 
     fun FragmentWeatherListBinding.showResult() {
-        this.mainFragmentLoadingLayout.visibility = View.VISIBLE
-        this.weatherListFragmentFAB.visibility = View.GONE
+        this.mainFragmentLoadingLayout.visibility = View.GONE
+        this.weatherListFragmentFAB.visibility = View.VISIBLE
     }
 
     override fun onItemClick(weather: Weather) {
