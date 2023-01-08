@@ -54,5 +54,27 @@ internal class MainActivity : AppCompatActivity() {
     результат:
     было @@@ lat: 1.0 lon: 2.0
     стало @@@ lat: 2.0 lon: 1.0
+
+   weather?.let{
+    val uri = URL("https://api.weather.yandex.ru/v2/informers?lat=${it.city.lat}&lon${it.city.lot}")
+    var myConnection: HttpURLConnection? = null
+
+    myConnection: uri.openConnection() as HttpURLConnection
+    myConnection.readTimeout = 50
+    myConnection.addRequestProperty("X-Yandex-API-Key","d600ffb9-0e17-404e-b2af-98457ef3ab5a")
+    Thread{
+        val reader = BufferedReader(InputStreamReader(myConnection.inputStream))
+        val weatherDTO = Gson().fromJson(getLines(reader), WeatherDTO::class.java)
+
+        requireActivity().runOnUiTread{
+        }
+        renderData(it.apply{
+        feelsLike = weatherDTO.fact.feelsLike
+        temperature = weatherDTO.fact.temp
+
+       })
+      }
+     }.start()
+
 */
 

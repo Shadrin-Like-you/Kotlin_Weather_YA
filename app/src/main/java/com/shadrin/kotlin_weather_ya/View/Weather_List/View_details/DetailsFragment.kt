@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.shadrin.kotlin_weather_ya.databinding.FragmentDetailsBinding
 import com.shadrin.kotlin_weather_ya.domain.Weather
+import com.shadrin.kotlin_weather_ya.utils.WeatherLoader
 
 class DetailsFragment : Fragment() {
 
@@ -17,6 +18,11 @@ class DetailsFragment : Fragment() {
         get() {
             return _binding!!
         }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,17 +36,35 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       arguments?.let { arg ->
-           arg.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)?.let {weather ->
-               renderData(weather)
-           }
-       }
+        val weather = arguments?.let { arg ->
+            arg.getParcelable<Weather>(BUNDLE_WEATHER_EXTRA)
 
+        }
+        weather?.let { weatherLocal ->
+            WeatherLoader.requestFirstVariant(weatherLocal.city.lat, weatherLocal.city.lon)
+            { weatherDTO->
+                requireActivity().runOnUiThread {
+                    renderData(weatherLocal.apply {
+                        weatherLocal.feelsLike = weatherDTO.fact.feelsLike
+                        weatherLocal.temperature = weatherDTO.fact.temp
+                    })
+                }
+            }
+            WeatherLoader.requestSecondVariant(weatherLocal.city.lat,weatherLocal.city.lon)
+            {weatherDTO->
+                requireActivity().runOnUiThread {
+                    renderData(weatherLocal.apply {
+                        weatherLocal.feelsLike = weatherDTO.fact.feelsLike
+                        weatherLocal.temperature = weatherDTO.fact.temp
+                    })
+                }
+            }
+        }
 
     }
 
     private fun renderData(weather: Weather) {
-        with(binding){
+        with(binding) {
             cityName.text = weather.city.name
             temperatureValue.text = weather.temperature.toString()
             feelsLikeValue.text = weather.feelsLike.toString()
