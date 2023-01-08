@@ -1,40 +1,28 @@
 package com.shadrin.kotlin_weather_ya
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import androidx.appcompat.widget.AppCompatButton
-import android.view.View.OnClickListener as OnClickListener
+import androidx.appcompat.app.AppCompatActivity
+import com.shadrin.kotlin_weather_ya.View.Weather_List.WeatherListFragment
+import com.shadrin.kotlin_weather_ya.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+internal class MainActivity : AppCompatActivity() {
+
+    lateinit var binding: ActivityMainBinding
+
+    /*
+     lateinit - отложенная инициализация, позволяет избежать NullPointerException (null) пока нет
+       инфы по переменной.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        findViewById<AppCompatButton>(R.id.btn1).setOnClickListener(object : OnClickListener {
-            override fun onClick(v: View?) {
-
-            }
-
-        })
-        val dataClass1 = City(name = "Barselona", weather = R.color.purple_200)
-        val dataClass2 = dataClass1.copy(name = "Madrid")
-
-        fun city() {
-            val cites = ArrayList<City>()
-            cites.add(City("New York", R.color.teal_200))
-            cites.add(City("Valencia", R.color.purple_200))
-            cites.add(City("London", R.color.white))
-
-            for ((d, r) in cites) {
-                println("$d, $r")
-            }
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        //setContentView(R.layout.activity_main)
+        setContentView(binding.root)
+        //binding.btn1.text = "WTF!"
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, WeatherListFragment.newInstant()).commit()
         }
-
-        Log.d("City", dataClass1.toString())
-        Log.d("City", dataClass2.toString())
-        println(dataClass2)
-
 
     }
 
@@ -46,5 +34,47 @@ class MainActivity : AppCompatActivity() {
    & [lang=<язык ответа>]
 
    X-Yandex-API-Key: <значение ключа>
+
+   Сортировка с помощью лямбд:
+    var numList = listOf(3,5,2,9,45,23,1).also {
+        it.sorted() //сортируем
+    }.also {
+        it.map { "$it" } // записываем новый список (необязательно)
+    }.let { it.first() } // возвращаем первый (он же минимум) элемент
+
+   Пример по замене значений с помощью лямбды
+    var lat: Double = 1.0
+    var lon: Double = 2.0
+    Log.d("@@@","lat: ${lat} lon: ${lat}")
+    lat = lon.apply{
+        lon = lat
+    }
+    Log.d("@@@","lat: ${lat} lon: ${lat} ")
+
+    результат:
+    было @@@ lat: 1.0 lon: 2.0
+    стало @@@ lat: 2.0 lon: 1.0
+
+   weather?.let{
+    val uri = URL("https://api.weather.yandex.ru/v2/informers?lat=${it.city.lat}&lon${it.city.lot}")
+    var myConnection: HttpURLConnection? = null
+
+    myConnection: uri.openConnection() as HttpURLConnection
+    myConnection.readTimeout = 50
+    myConnection.addRequestProperty("X-Yandex-API-Key","d600ffb9-0e17-404e-b2af-98457ef3ab5a")
+    Thread{
+        val reader = BufferedReader(InputStreamReader(myConnection.inputStream))
+        val weatherDTO = Gson().fromJson(getLines(reader), WeatherDTO::class.java)
+
+        requireActivity().runOnUiTread{
+        }
+        renderData(it.apply{
+        feelsLike = weatherDTO.fact.feelsLike
+        temperature = weatherDTO.fact.temp
+
+       })
+      }
+     }.start()
+
 */
 
